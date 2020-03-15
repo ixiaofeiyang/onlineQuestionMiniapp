@@ -1,0 +1,42 @@
+<wxs src="./../tools.wxs" module="JSON" />
+<view class="exercise">
+    <view class="sortnumber">
+        <view class="left">正在诊断考点的掌握情况</view>
+        <view class="right">
+            <text>{{idx+1}}</text>/<text>{{length}}</text></view>
+    </view>
+    <view class="progress">
+        <progress percent="{{percent}}" color="#1bcfad" active active-mode="forwards"/>
+    </view>
+    <view class="question">
+        <view class="title">{{question.title}}</view>
+        <view class="type">{{question.typename}}</view>
+        <view class="options" wx:if="{{question.typecode == '01' || question.typecode == '02'}}">
+            <view wx:for="{{options}}" wx:for-index="idx" wx:for-item="item" class="option" data-typecode="{{question.typecode}}" data-value="{{JSON.stringify(item)}}" bindtap="selectOption">
+                <view class="icon">
+                    <image src="{{item.selected ? '/images/radio-selected.png' : '/images/radio.png'}}" />
+                </view>
+                <view class="content">{{item.code}}: {{item.content}}</view>                
+            </view>
+        </view>
+        <view class="other" wx:if="{{question.typecode == '03'}}">
+            <view wx:for="{{options}}" wx:for-index="idx" wx:for-item="item" class="option" data-typecode="{{question.typecode}}" data-value="{{JSON.stringify(item)}}" bindtap="selectOption">
+
+                <view class="content">
+                    <view class="page-section">
+                        <view class="weui-cells__title">{{idx+1}}</view>
+                        <view class="weui-cells weui-cells_after-title">
+                        <view class="weui-cell weui-cell_input">
+                            <input class="weui-input" auto-focus placeholder="请输入" bindinput="bindKeyInput" bindblur="bindBlurInput"/>
+                        </view>
+                        </view>
+                    </view>
+                </view>                
+            </view>
+        </view>
+    </view>
+    <view class="btn-area" bindtap="doNext">
+        <view class="button">{{btnText}}</view>
+    </view>
+    
+</view>

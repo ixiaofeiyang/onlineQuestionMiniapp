@@ -1,0 +1,42 @@
+<wxs src="../../tools.wxs" module="JSON" />
+<template name="answer">
+  <view class="all-wrap">
+    <scroll-view scrollY style="height:100%;">
+     
+
+      <view bindtouchend="bindtouchend" bindtouchmove="bindtouchmove" bindtouchstart="touchstart" class="answer-wrap">
+        <view class="answer-title">
+          <image src="../../images/jkt/danxuan.png" wx:if="{{ques.typename=='单选'}}"></image>
+          <image src="../../images/jkt/duoxuan.png" wx:if="{{ques.typename=='多选'}}"></image>
+          <view style="width:100%">
+            <text>{{ques.title}}</text>
+            <text wx:if="{{testMode}}">{{ques.question_id}} 答案：{{ques.answer}}</text>
+          </view>
+        </view>
+
+        <view class="answer-select">
+          <view class="direction" data-answer="{{ques.answer}}" data-id="{{ques.question_id}}" data-ind="{{ind}}" wx:for="{{ques.options}}" wx:for-index="ind" wx:for-item="itemName"
+            wx:key="index">
+            <view class="answer-left">
+              <text class="option" wx:if="{{itemName.value==0}}">{{itemName.code}}</text>
+              <image src="../../images/jkt/success.png" wx:if="{{itemName.value==1}}"></image>
+            </view>
+            <view class="answer-right">
+              <text>{{itemName.content}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="explantion">
+          <view class="explanation-title">
+            <view class="explanation-left">解释</view>
+          </view>
+          <view class="explanation-text">{{ques.comments}}</view>
+        </view>
+      </view>
+      
+    
+      <view style="height:100px;width:100%;background:#f5f6f7"></view>
+    </scroll-view>
+  </view>
+</template>

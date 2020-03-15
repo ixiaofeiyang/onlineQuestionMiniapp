@@ -1,0 +1,12 @@
+<view class="page-history">
+    <view class="title">您参与的操作记录如下</view>
+    <view class="historys">
+        <block wx:for="{{items}}" wx:key="id" wx:for-index="idx" wx:for-item="item">
+            <view class="history" bindtap="toReviewPage" data-id="{{item._id}}">
+                <view class="sortnum">{{idx+1}}</view>
+                <view class="name">{{item._id}}-{{item.nums}}分-{{item.time}}</view>
+                <view class="arraw">></view>
+            </view>       
+        </block>
+    </view>
+</view>

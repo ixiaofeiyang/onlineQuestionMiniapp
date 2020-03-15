@@ -1,0 +1,133 @@
+<wxs src="../../tools.wxs" module="JSON" />
+<template name="answer">
+  <view class="all-wrap" wx:if="{{!iconInd}}">
+    <scroll-view scrollY style="height:100%;">
+      <view bindtouchend="bindtouchend" bindtouchmove="bindtouchmove" bindtouchstart="touchstart" class="answer-wrap" wx:if="{{textTab!='背题模式' && ques.typename=='单选'}}">
+        <view class="answer-title">
+          <image src="../../images/jkt/danxuan.png" wx:if="{{ques.typename=='单选'}}"></image>
+          <view style="width:100%">
+            <text>{{ques.title}}</text>
+          </view>
+        </view>
+ 
+        <view class="answer-select">
+          <view bindtap="selectAnswer" class="direction" data-code="{{itemName.code}}" data-value="{{JSON.stringify(ques)}}" data-answer="{{ques.answer}}" data-id="{{ques.question_id}}" data-ind="{{ind}}" wx:for="{{ques.options}}" wx:for-index="ind" wx:for-item="itemName" wx:key="index">
+            <view class="answer-left">
+                <text class="option" wx:if="{{!ques.status}}">{{itemName.code}}</text>
+                <image src="../../images/jkt/success.png" wx:if="{{ques.status&&itemName.value==1}}"></image>
+                <image src="../../images/jkt/error.png" wx:if="{{ques.status&&itemName.selected&&itemName.value==0}}"></image>
+                <text class="option" wx:if="{{ques.status&&!itemName.selected&&itemName.value==0}}">{{itemName.code}}</text>
+                
+            </view>
+            <view class="answer-right">
+                <text class="text" wx:if="{{!ques.status}}">{{itemName.content}}</text>
+                <text class="green-active" wx:if="{{ques.status&&itemName.value==1}}">{{itemName.content}}</text>
+                <text class="red-active" wx:if="{{ques.status&&itemName.selected&&itemName.value==0}}">{{itemName.content}}</text>
+                <text class="text" wx:if="{{ques.status&&!itemName.selected&&itemName.value==0}}">{{itemName.content}}</text>
+                
+            </view>
+          </view>
+        </view>
+        
+      </view>
+
+      <view bindtouchend="bindtouchend" bindtouchmove="bindtouchmove" bindtouchstart="touchstart" class="answer-wrap" wx:if="{{textTab=='背题模式' && ques.typename=='单选'}}">
+        <view class="answer-title">
+          <image src="../../images/jkt/danxuan.png" wx:if="{{ques.typename=='单选'}}"></image>
+          <view style="width:100%">
+            <text>{{ques.title}}</text>
+            <text wx:if="{{testMode}}">{{ques.question_id}} 答案：{{ques.answer}}</text>
+          </view>
+        </view>
+        <view class="answer-ziyuan">
+          <image mode="aspectFit" src="{{ques.media}}" wx:if="{{ques.media_type=='1'}}"></image>
+        </view>
+        <view class="answer-select" wx:if="{{!ques['order']['down']}}">
+          <view class="direction" data-answer="{{ques.answer}}" data-id="{{ques.question_id}}" data-ind="{{ind}}" wx:for="{{ques.options}}" wx:for-index="ind" wx:for-item="itemName"
+            wx:key="index">
+            <view class="answer-left">
+              <text class="option" wx:if="{{itemName.value == 0}}">{{itemName.code}}</text>
+              <image src="../../images/jkt/success.png" wx:if="{{itemName.value==1}}"></image>
+            </view>
+            <view class="answer-right">
+              <text class="{{itemName.value == 1 ? 'green-active':'text'}}">{{itemName.content}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="explantion">
+          <view class="explanation-title">
+            <view class="explanation-left">解释</view>
+          </view>
+          <view class="explanation-text">{{ques.comments}}</view>
+        </view>
+      </view>
+      <view bindtouchend="bindtouchend" bindtouchmove="bindtouchmove" bindtouchstart="touchstart" class="answer-wrap" wx:if="{{textTab!='背题模式' && ques.typename=='多选'}}">
+        <view class="answer-title">
+          <image src="../../images/jkt/duoxuan.png" wx:if="{{ques.typename=='多选'}}"></image>
+          <view>
+            <text>{{ques.title}}</text>
+          </view>
+        </view>
+        <view class="answer-ziyuan">
+          <image mode="aspectFit" src="{{ques.media}}" wx:if="{{ques.media_type=='1'}}"></image>
+        </view>
+        <view class="answer-select">
+           <view bindtap="selectAnswerMore" class="direction" data-code="{{itemName.code}}" data-value="{{JSON.stringify(ques)}}" data-answer="{{ques.answer}}" data-id="{{ques.question_id}}" data-ind="{{ind}}" data-qutype="{{ques.typename}}" wx:for="{{ques.options}}" wx:for-index="ind" wx:for-item="itemName" wx:key="index">
+            <view class="answer-left">
+                <!--未提交-->
+                <text class="option" wx:if="{{!ques.status&&!itemName.selected}}">{{itemName.code}}</text>
+                <text class="option-active" wx:if="{{!ques.status&&itemName.selected}}">{{itemName.code}}</text>
+                <image src="../../images/jkt/success.png" wx:if="{{ques.status&&itemName.value==1}}"></image>
+                <image src="../../images/jkt/error.png" wx:if="{{ques.status&&itemName.value==0&&itemName.selected}}"></image>
+                <text class="option" wx:if="{{ques.status&&itemName.value==0&&!itemName.selected}}">{{itemName.code}}</text>
+            </view>
+            <view class="answer-right">
+                <text class="text" wx:if="{{!ques.status&&!itemName.selected}}">{{itemName.content}}</text>
+                <text class="text-active" wx:if="{{!ques.status&&itemName.selected}}">{{itemName.content}}</text>
+                <text class="green-active" wx:if="{{ques.status&&itemName.value==1}}">{{itemName.content}}</text>
+                <text class="red-active" wx:if="{{ques.status&&itemName.value==0&&itemName.selected}}">{{itemName.content}}</text>
+                <text class="text" wx:if="{{ques.status&&itemName.value==0&&!itemName.selected}}">{{itemName.content}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <view style="height:40px;" wx:if="{{ques['order']['subup']=='1'}}"></view>
+        <view style="padding-bottom:20rpx;" wx:if="{{textTab!='背题模式'&&ques.typename=='多选'}}">
+          <view bindtap="moreSelectSub" class="sunup" data-value="{{JSON.stringify(ques)}}" data-answer="{{ques.answer}}" data-id="{{ques.question_id}}">提交</view>
+        </view>
+      </view>
+      <view bindtouchend="bindtouchend" bindtouchmove="bindtouchmove" bindtouchstart="touchstart" class="answer-wrap" wx:if="{{textTab=='背题模式'&&ques.typename=='多选'}}">
+        <view class="answer-title">
+          <image src="../../images/jkt/duoxuan.png" wx:if="{{ques.typename=='多选'}}"></image>
+          <view>{{ques.title}}
+            <text wx:if="{{testMode}}">{{ques.question_id}} 答案：{{ques.answer}}</text>
+          </view>
+        </view>
+        <view class="answer-ziyuan">
+          <image mode="aspectFit" src="{{ques.media}}" wx:if="{{ques.media_type=='1'}}"></image>
+        </view>
+        <view class="answer-select">
+          <view class="direction" data-answer="{{ques.answer}}" data-id="{{ques.question_id}}" data-ind="{{ind}}" wx:for="{{ques.options}}" wx:for-index="ind" wx:for-item="itemName" wx:key="index">
+            <view class="answer-left">
+              <text class="option" wx:if="{{itemName.value==0}}">{{itemName.code}}</text>
+              <image src="../../images/jkt/success.png" wx:if="{{itemName.value==1}}">{{itemName.code}}</image>
+            </view>
+            <view class="answer-right">
+              <text class="text">{{itemName.content}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="explanation">
+          <view class="explanation-title">
+            <view class="explanation-left">解释</view>
+          </view>
+          <view class="explanation-text">{{ques.comments}}</view>
+        </view>
+      </view>
+
+      <view style="height:100px;width:100%;background:#f5f6f7"></view>
+    </scroll-view>
+  </view>
+</template>
